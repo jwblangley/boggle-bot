@@ -26,6 +26,12 @@ const useStyles = makeStyles(theme => ({
     gridPaper: {
         padding: theme.spacing(2)
     },
+    displayImage: {
+        marginTop: theme.spacing(2),
+        width: '90%',
+        height: '70vh',
+        objectFit: 'contain'
+    }
 }))
 
 export default useStyles
