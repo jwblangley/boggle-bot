@@ -6,12 +6,15 @@ import {
     Typography
 } from '@material-ui/core/index'
 
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 import useStyles from './style'
 
 const Main = () => {
 
     const classes = useStyles()
 
+    const isPortraitDevice = useMediaQuery('(max-aspect-ratio: 11/10)');
 
     return (
         <div>
@@ -28,12 +31,12 @@ const Main = () => {
                 container
                 spacing={2}
             >
-                <Grid item xs={8}>
+                <Grid item xs={isPortraitDevice ? 12 : 8}>
                     <Paper className={classes.gridPaper}>
                         Hello
                     </Paper>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={isPortraitDevice ? 12 : 4}>
                     <Paper className={classes.gridPaper}>
                         Also hello
                     </Paper>
