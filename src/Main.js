@@ -12,6 +12,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useStyles from './style'
 
 import Ocr from './utils/Ocr'
+import {detectLetterGrid} from './utils/ImageAnalysis'
 
 const Main = () => {
 
@@ -48,20 +49,36 @@ const Main = () => {
     }
 
     async function handleFile(file) {
-        const img = new Image()
-        img.src = URL.createObjectURL(file)
-        img.onload = (async () => {
-            drawScaledImageToCanvas(img)
+        const displayResult = new Image()
+        displayResult.src = URL.createObjectURL(file)
+        displayResult.onload = () => {
+            drawScaledImageToCanvas(displayResult)
+        }
 
-            const imgData = canvasRef.current.toDataURL('image/png')
-            console.log(imgData);
 
-            const ocr = new Ocr()
-            await ocr.init()
-            const orientation = await ocr.getOrientation(imgData)
-            console.log(orientation)
-            await ocr.terminate()
-        })
+        const edges = await detectLetterGrid(URL.createObjectURL(file))
+        console.log(edges);
+
+
+
+
+        // img.onload = (async () => {
+        //     const edges = cannyEdgeDetector(img)
+        //     console.log(edges)
+
+        //     drawScaledImageToCanvas(img)
+
+        //     const imgData = canvasRef.current.toDataURL('image/png')
+
+        //     // const ocr = new Ocr()
+        //     // await ocr.init()
+        //     // const orientation = await ocr.getOrientation(imgData)
+        //     // console.log(orientation)
+        //     // await ocr.terminate()
+
+
+
+        // })
     }
 
 
