@@ -26,11 +26,11 @@ const useStyles = makeStyles(theme => ({
     gridPaper: {
         padding: theme.spacing(2)
     },
-    displayImage: {
+    displayCanvas: {
         marginTop: theme.spacing(2),
         width: '90%',
-        height: '70vh',
-        objectFit: 'contain'
+        height: '70vh'
+        // objectFit: 'contain'
     }
 }))
 
