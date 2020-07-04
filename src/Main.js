@@ -11,7 +11,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import useStyles from './style'
 
-import Osd from './utils/Osd'
+import Ocr from './utils/Ocr'
 
 const Main = () => {
 
@@ -50,16 +50,18 @@ const Main = () => {
     async function handleFile(file) {
         const img = new Image()
         img.src = URL.createObjectURL(file)
-        img.onload = (() => {
+        img.onload = (async () => {
             drawScaledImageToCanvas(img)
+
+            const imgData = canvasRef.current.toDataURL('image/png')
+            console.log(imgData);
+
+            const ocr = new Ocr()
+            await ocr.init()
+            const orientation = await ocr.getOrientation(imgData)
+            console.log(orientation)
+            await ocr.terminate()
         })
-
-
-        // const osd = new Osd()
-        // await osd.init()
-        // const result = await osd.getScript(e.target.files[0])
-        // console.log(result)
-        // await osd.terminate()
     }
 
 
