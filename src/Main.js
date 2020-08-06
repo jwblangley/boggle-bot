@@ -52,12 +52,26 @@ const Main = () => {
         const displayResult = new Image()
         displayResult.src = URL.createObjectURL(file)
         displayResult.onload = () => {
-            drawScaledImageToCanvas(displayResult)
+            // drawScaledImageToCanvas(displayResult)
         }
 
 
         const edges = await detectLetterGrid(URL.createObjectURL(file))
         console.log(edges);
+        const ctx = canvasRef.current.getContext("2d")
+        for (let i = 0; i < edges.length; i++) {
+            const {m, b} = edges[i]
+
+            ctx.beginPath()
+            // When x = 0
+            ctx.moveTo(0, b)
+            console.log({x: 0, y: b})
+            // When y = 0
+            ctx.lineTo(-1 * b / m, 0)
+            console.log({ x: -1 * b / m, y: 0})
+            ctx.stroke()
+            console.log("Line end")
+        }
 
 
 

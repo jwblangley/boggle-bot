@@ -19,6 +19,8 @@ function getEdges(img) {
 function linearHoughTransform(img, rBuckets, thetaBuckets) {
     const { width, height, data } = img
 
+    // Calculate Hough space
+
     // r: [-maxR, maxR]
     // theta: [0, pi]
 
@@ -48,7 +50,22 @@ function linearHoughTransform(img, rBuckets, thetaBuckets) {
         }
     }
 
-    const peaks = findPeaks(houghSpace)
+    // Find peaks
+    let peaks = findPeaks(houghSpace)
+
+    // Convert back to r and theta
+    peaks = peaks.map(({i, j}) => {
+        const r = (2 * maxR / rBuckets * i) - maxR
+        const theta = incTheta * j
+        return {r, theta}
+    })
+
+    // Convert to y = mx + b
+    peaks = peaks.map(({r, theta}) => {
+        const m = -1 * Math.cos(theta) / Math.sin(theta)
+        const b = r / Math.sin(theta)
+        return {m, b}
+    })
 
     return peaks
 }
@@ -66,18 +83,23 @@ function gaussianBlur2d(data) {
 function findPeaks(data) {
     const smoothed = gaussianBlur2d(data)
 
-    const numLessThreshold = 5
+    const numLessThreshold = 7
     const scale = 1
 
     let peaks = []
 
-    for (let y = scale; y < result.length - scale; y++) {
-        for (let x = scale; x < result[0].length - scale; x++) {
+    for (let y = scale; y < smoothed.length - scale; y++) {
+        for (let x = scale; x < smoothed[0].length - scale; x++) {
             let numLess = 0;
             for (let i = -1 * scale; i <= scale; i++) {
                 for (let j = -1 * scale; j <= scale; j++) {
-                    if (smoothed[y + i][x + j])
+                    if (smoothed[y + i][x + j] < smoothed[y][x]) {
+                        numLess++
+                    }
                 }
+            }
+            if (numLess >= numLessThreshold) {
+                peaks.push({'i': x, 'j': y})
             }
         }
     }
@@ -91,13 +113,13 @@ function convolve2d(data, filter) {
 
     let result = [...data]
 
-    for (let y = filterBoundary; y < result.length - filterBoundary; y++) {
-        for (let x = filterBoundary; x < result[0].length - filterBoundary; x++) {
+    for (let y = filterBoundary; y < data.length - filterBoundary; y++) {
+        for (let x = filterBoundary; x < data[0].length - filterBoundary; x++) {
             let acc = 0
             for (let i = -1 * filterBoundary; i <= filterBoundary; i++) {
                 for (let j = -1 * filterBoundary; j <= filterBoundary; j++) {
                     // N.B: flip since convolution
-                    acc += data[y + i][x + j] * filter[filter.length - 1 - i][filter.length - 1 - j]
+                    acc += data[y - i][x - j] * filter[filterBoundary + i][filterBoundary + j]
                 }
             }
             result[y][x] = acc
