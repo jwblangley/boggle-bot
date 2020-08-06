@@ -15,7 +15,7 @@ function getEdges(img) {
 }
 
 function linearHoughTransform(img, rBuckets, thetaBuckets) {
-    const {width, height, data} = img
+    const { width, height, data } = img
 
     // r: [-maxR, maxR]
     // theta: [0, pi]
@@ -27,18 +27,18 @@ function linearHoughTransform(img, rBuckets, thetaBuckets) {
 
     const incTheta = maxTheta / thetaBuckets
 
-    for (var y = 0; y < height; y++) {
-        for (var x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
             const i = y * width + x
             const val = data[i]
 
             if (val > 0) {
                 // Edge
-                for (var t = 0; t < thetaBuckets; t++) {
+                for (let t = 0; t < thetaBuckets; t++) {
                     const theta = t * incTheta
                     const r = x * Math.cos(theta) + y * Math.sin(theta)
 
-                    const rBucket = Math.floor((r *  (rBuckets / 2) / maxR) + (rBuckets / 2))
+                    const rBucket = Math.floor((r * (rBuckets / 2) / maxR) + (rBuckets / 2))
 
                     houghSpace[rBucket][t]++
                 }
@@ -46,6 +46,32 @@ function linearHoughTransform(img, rBuckets, thetaBuckets) {
         }
     }
 
-    return houghSpace
+    const gaussianData = gaussianBlur2d(houghSpace)
 
+    return gaussianData
+}
+
+function gaussianBlur2d(data) {
+    const filter = [
+        [1 / 16, 2 / 16, 1 / 16],
+        [2 / 16, 4 / 16, 2 / 16],
+        [1 / 16, 2 / 16, 1 / 16],
+    ]
+    const filterBoundary = filter.length >> 1
+
+    let result = [...data]
+
+    for (let y = filterBoundary; y < result.length - filterBoundary; y++) {
+        for (let x = filterBoundary; x < result[0].length - filterBoundary; x++) {
+            let acc = 0
+            for (let i = 0; i < filter.length; i++) {
+                for (let j = 0; j < filter.length; j++) {
+                    // N.B: order since convolution
+                    acc += data[y][x] * filter[j][i]
+                }
+            }
+            result[y][x] = acc
+        }
+    }
+    return result
 }
