@@ -48,9 +48,9 @@ function linearHoughTransform(img, rBuckets, thetaBuckets) {
         }
     }
 
-    const gaussianData = gaussianBlur2d(houghSpace)
+    const peaks = findPeaks(houghSpace)
 
-    return gaussianData
+    return peaks
 }
 
 function gaussianBlur2d(data) {
@@ -59,6 +59,34 @@ function gaussianBlur2d(data) {
         [2 / 16, 4 / 16, 2 / 16],
         [1 / 16, 2 / 16, 1 / 16],
     ]
+
+    return convolve2d(data, filter)
+}
+
+function findPeaks(data) {
+    const smoothed = gaussianBlur2d(data)
+
+    const numLessThreshold = 5
+    const scale = 1
+
+    let peaks = []
+
+    for (let y = scale; y < result.length - scale; y++) {
+        for (let x = scale; x < result[0].length - scale; x++) {
+            let numLess = 0;
+            for (let i = -1 * scale; i <= scale; i++) {
+                for (let j = -1 * scale; j <= scale; j++) {
+                    if (smoothed[y + i][x + j])
+                }
+            }
+        }
+    }
+
+    return peaks
+}
+
+// pre: square, odd-sized filter
+function convolve2d(data, filter) {
     const filterBoundary = filter.length >> 1
 
     let result = [...data]
@@ -66,10 +94,10 @@ function gaussianBlur2d(data) {
     for (let y = filterBoundary; y < result.length - filterBoundary; y++) {
         for (let x = filterBoundary; x < result[0].length - filterBoundary; x++) {
             let acc = 0
-            for (let i = 0; i < filter.length; i++) {
-                for (let j = 0; j < filter.length; j++) {
-                    // N.B: order since convolution
-                    acc += data[y][x] * filter[j][i]
+            for (let i = -1 * filterBoundary; i <= filterBoundary; i++) {
+                for (let j = -1 * filterBoundary; j <= filterBoundary; j++) {
+                    // N.B: flip since convolution
+                    acc += data[y + i][x + j] * filter[filter.length - 1 - i][filter.length - 1 - j]
                 }
             }
             result[y][x] = acc
