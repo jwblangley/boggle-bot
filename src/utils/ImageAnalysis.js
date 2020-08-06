@@ -1,12 +1,14 @@
 import cannyEdgeDetector from 'canny-edge-detector'
 import { Image as ImageJS } from 'image-js'
 
+const R_BUCKETS = 100
+const THETA_BUCKETS = 90
+
 export async function detectLetterGrid(source) {
     const img = await ImageJS.load(source)
     const edges = getEdges(img)
 
-
-    return linearHoughTransform(edges, 100, 90)
+    return linearHoughTransform(edges, R_BUCKETS, THETA_BUCKETS)
 }
 
 function getEdges(img) {
