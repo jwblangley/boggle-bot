@@ -19,6 +19,10 @@ const InputGrid = ({width, height}) => {
         return result.map(inner => [...inner])
     }
 
+    function checkValidInput(str) {
+        return str.match(/^([A-Z]|QU)$/g)
+    }
+
     return (
         <Grid
             container
@@ -40,6 +44,7 @@ const InputGrid = ({width, height}) => {
                             >
                                 <TextField
                                     variant="outlined"
+                                    error={!checkValidInput(inputs[i][j])}
                                     inputProps={{ style: {
                                         'width': `${45 / width}vmin`,
                                         'height': `${45 / width}vmin`,
@@ -51,7 +56,7 @@ const InputGrid = ({width, height}) => {
                                     value={input}
                                     onChange={e => {
                                         let stateClone = deepCopy(inputs)
-                                        stateClone[i][j] = e.target.value
+                                        stateClone[i][j] = e.target.value.toUpperCase()
                                         setInputs(stateClone)
                                     }}
                                 />
