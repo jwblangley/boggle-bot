@@ -3,13 +3,14 @@ import React, {useState} from 'react'
 import {
     Grid,
     Paper,
-    Typography,
-    Input
+    Typography
 } from '@material-ui/core/index'
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import useStyles from './style'
+
+import InputGrid from './components/InputGrid/InputGrid'
 
 const Main = () => {
 
@@ -35,7 +36,7 @@ const Main = () => {
             >
                 <Grid item xs={isPortraitDevice ? 12 : 8}>
                     <Paper className={classes.gridPaper}>
-                        Hello
+                        <InputGrid width={4} height={4} />
                     </Paper>
                 </Grid>
                 <Grid item xs={isPortraitDevice ? 12 : 4}>
