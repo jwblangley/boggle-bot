@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import {
     Grid,
@@ -7,17 +7,10 @@ import {
 
 import useStyles from './style'
 
-const InputGrid = ({width, height}) => {
-
+const InputGrid = ({values, onChange}) => {
     const classes = useStyles()
 
-    // State
-    const [inputs, setInputs] = useState(Array(height).fill().map(() => Array(width).fill('')))
-
-    function deepCopy(data) {
-        let result = [...data]
-        return result.map(inner => [...inner])
-    }
+    const width = values[0].length
 
     function checkValidInput(str) {
         return str.match(/^([A-Z]|QU)$/g)
@@ -30,13 +23,13 @@ const InputGrid = ({width, height}) => {
             className={classes.container}
         >
             {
-                inputs.map((row, i) => (
+                values.map((row, i) => (
                     <Grid
                         container
                         className={classes.row}
                         key={`row${i}`}
                     >
-                        {row.map((input, j) => (
+                        {row.map((value, j) => (
                             <Grid
                                 item
                                 key={`item${i}${j}`}
@@ -44,20 +37,18 @@ const InputGrid = ({width, height}) => {
                             >
                                 <TextField
                                     variant="outlined"
-                                    error={!checkValidInput(inputs[i][j])}
+                                    error={!checkValidInput(values[i][j])}
                                     inputProps={{ style: {
                                         'width': `${45 / width}vmin`,
                                         'height': `${45 / width}vmin`,
-                                        'fontSize': '3.5em',
+                                        'fontSize': '3em',
                                         'textAlign': 'center',
                                         'boxSizing': 'border-box'
                                     }}}
 
-                                    value={input}
+                                    value={value}
                                     onChange={e => {
-                                        let stateClone = deepCopy(inputs)
-                                        stateClone[i][j] = e.target.value.toUpperCase()
-                                        setInputs(stateClone)
+                                        onChange(i, j, e.target.value)
                                     }}
                                 />
                             </Grid>

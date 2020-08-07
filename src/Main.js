@@ -18,6 +18,14 @@ const Main = () => {
     const isPortraitDevice = useMediaQuery('(max-aspect-ratio: 11/10)')
 
     // State
+    const [gridWidth, setGridWidth] = useState(4)
+    const [gridHeight, setGridHeight] = useState(4)
+    const [inputs, setInputs] = useState(Array(gridHeight).fill().map(() => Array(gridWidth).fill('')))
+
+    function deepCopy(data) {
+        let result = [...data]
+        return result.map(inner => [...inner])
+    }
 
     return (
         <div>
@@ -36,7 +44,11 @@ const Main = () => {
             >
                 <Grid item xs={isPortraitDevice ? 12 : 8}>
                     <Paper className={classes.gridPaper}>
-                        <InputGrid width={4} height={4} />
+                        <InputGrid values={inputs} onChange={(i, j, newValue) => {
+                            let stateClone = deepCopy(inputs)
+                            stateClone[i][j] = newValue.toUpperCase()
+                            setInputs(stateClone)
+                        }} />
                     </Paper>
                 </Grid>
                 <Grid item xs={isPortraitDevice ? 12 : 4}>
