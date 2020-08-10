@@ -3,7 +3,8 @@ import React, {useState} from 'react'
 import {
     Grid,
     Paper,
-    Typography
+    Typography,
+    Button
 } from '@material-ui/core/index'
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -27,6 +28,10 @@ const Main = () => {
         return result.map(inner => [...inner])
     }
 
+    function checkValidInput(str) {
+        return str.match(/^([A-Z]|QU)$/g)
+    }
+
     return (
         <div>
             <div className={classes.topBar}>
@@ -44,7 +49,7 @@ const Main = () => {
             >
                 <Grid item xs={isPortraitDevice ? 12 : 8}>
                     <Paper className={classes.gridPaper}>
-                        <InputGrid values={inputs} onChange={(i, j, newValue) => {
+                        <InputGrid values={inputs} checkValidInput={checkValidInput} onChange={(i, j, newValue) => {
                             let stateClone = deepCopy(inputs)
                             stateClone[i][j] = newValue.toUpperCase()
                             setInputs(stateClone)
@@ -53,7 +58,9 @@ const Main = () => {
                 </Grid>
                 <Grid item xs={isPortraitDevice ? 12 : 4}>
                     <Paper className={classes.gridPaper}>
-                        Also hello
+                        <Button variant='contained' color='primary' onClick={() => alert('test')}>
+                            Find Words
+                        </Button>
                     </Paper>
                 </Grid>
 

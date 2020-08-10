@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
         zIndex: 5,
         padding: theme.spacing(2),
         marginBottom: theme.spacing(2),
-        backgroundColor: theme.palette.primary.dark
+        backgroundColor: theme.palette.primary.main
     },
     title: {
         textAlign: 'center',

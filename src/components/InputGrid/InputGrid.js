@@ -7,14 +7,10 @@ import {
 
 import useStyles from './style'
 
-const InputGrid = ({values, onChange}) => {
+const InputGrid = ({values, onChange, checkValidInput}) => {
     const classes = useStyles()
 
     const width = values[0].length
-
-    function checkValidInput(str) {
-        return str.match(/^([A-Z]|QU)$/g)
-    }
 
     return (
         <Grid
