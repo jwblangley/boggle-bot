@@ -30,7 +30,7 @@ export class Node {
 
                 for (let k = -1; k <= 1; k++) {
                     for (let l = -1; l <= 1; l++) {
-                        if (k == 0 && l == 0) {
+                        if (k === 0 && l === 0) {
                             continue; // Don't add self
                         }
                         if (i + k >= 0 && i + k < nodes.length
@@ -41,7 +41,7 @@ export class Node {
                 }
             }
         }
-        return nodes
+        return nodes.reduce((acc, val) => acc.concat(val), []);
     }
 }
 
