@@ -32,6 +32,10 @@ const Main = () => {
         return str.match(/^([A-Z]|QU)$/g)
     }
 
+    function findWords(inputGrid) {
+
+    }
+
     return (
         <div>
             <div className={classes.topBar}>
@@ -58,7 +62,15 @@ const Main = () => {
                 </Grid>
                 <Grid item xs={isPortraitDevice ? 12 : 4}>
                     <Paper className={classes.gridPaper}>
-                        <Button variant='contained' color='primary' onClick={() => alert('test')}>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            onClick={() => {
+                                if (!inputs.every(row => row.every(item => checkValidInput(item)))) {
+                                    alert("Please fill in grid correctly")
+                                }
+                                findWords(inputs)
+                            }}>
                             Find Words
                         </Button>
                     </Paper>
