@@ -1,4 +1,4 @@
-function pathsFrom(current, filter, earlyPrune, path=[], visited=[], results=[]) {
+export function pathsFrom(current, filter = () => true, earlyPrune = () => false, path=[], visited=[], results=[]) {
     path.push(current)
     visited.push(current)
 
@@ -12,8 +12,11 @@ function pathsFrom(current, filter, earlyPrune, path=[], visited=[], results=[])
         results.push([...path])
     }
 
+    // Due to worker deep copy
+    const neighbours = current.neighbours || current._neighbours
+
     // Check for cycle
-    for (const neighbour of current.neighbours) {
+    for (const neighbour of neighbours) {
         if (!path.includes(neighbour)) {
             pathsFrom(neighbour, filter, earlyPrune, path, visited, results)
         }
