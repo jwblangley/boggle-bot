@@ -1,13 +1,15 @@
-function pathsFrom(current, path=[], visited=[], results=[]) {
+function pathsFrom(current, filterPred, path=[], visited=[], results=[]) {
     path.push(current)
     visited.push(current)
 
-    results.push([...path])
+    if (filterPred([...path])) {
+        results.push([...path])
+    }
 
     // Check for cycle
     for (const neighbour of current.neighbours) {
         if (!path.includes(neighbour)) {
-            pathsFrom(neighbour, path, visited, results)
+            pathsFrom(neighbour, filterPred, path, visited, results)
         }
     }
 
@@ -17,10 +19,10 @@ function pathsFrom(current, path=[], visited=[], results=[]) {
     return results
 }
 
-export function allPaths(nodes) {
+export function allPaths(nodes, filterPred = (() => true)) {
     let res = []
     for (const node of nodes) {
-        res = res.concat(pathsFrom(node))
+        res = res.concat(pathsFrom(node, filterPred))
     }
     return res
 }

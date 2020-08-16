@@ -6,10 +6,11 @@ import allPaths from './util/allPaths'
 export const findWords = (inputGrid, dictionary, minWordLength) => {
     const graph = Node.graphFromGrid(inputGrid)
 
-    const results = allPaths(graph)
-        // Do all filtering first at the cost of recomputation to save memory
-        .filter(path => path.length >= minWordLength)
-        .filter(path => dictionary.includes(path.map(node => node.value).join('').toLowerCase()))
+    const paths = allPaths(graph, path =>
+        path.length >= minWordLength
+        && dictionary.includes(path.map(node => node.value).join('').toLowerCase()))
+
+    const results = paths
         .map(path => ({
             'string': path.map(node => node.value).join(''),
             'path': path.map(node => node.id)
