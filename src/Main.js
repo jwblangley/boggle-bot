@@ -84,7 +84,9 @@ const Main = () => {
                             onClick={() => {
                                 if (!inputs.every(row => row.every(item => checkValidInput(item)))) {
                                     alert("Please fill in grid correctly")
+                                    return
                                 }
+                                console.log('Start')
                                 findWords(inputs)
                             }}>
                             Find Words
