@@ -3,12 +3,19 @@ import _ from 'lodash'
 import Node from './util/Node'
 import allPaths from './util/allPaths'
 
+const pathToWord = path => {
+    return path.map(node => node.value).join('').toLowerCase()
+}
+
 export const findWords = (inputGrid, dictionary, minWordLength) => {
     const graph = Node.graphFromGrid(inputGrid)
 
-    const paths = allPaths(graph, path =>
-        path.length >= minWordLength
-        && dictionary.includes(path.map(node => node.value).join('').toLowerCase()))
+    const paths = allPaths(graph,
+        path =>
+            path.length >= minWordLength
+            && dictionary.includes(pathToWord(path)),
+        path => !dictionary.some(word => word.startsWith(pathToWord(path)))
+    )
 
     const results = paths
         .map(path => ({
