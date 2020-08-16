@@ -41,7 +41,7 @@ export class Node {
                 }
             }
         }
-        return nodes.reduce((acc, val) => acc.concat(val), []);
+        return nodes.reduce((acc, val) => acc.concat(val), [])
     }
 }
 
