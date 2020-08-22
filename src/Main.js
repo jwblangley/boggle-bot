@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash'
 
 import {
@@ -29,6 +29,8 @@ const Main = () => {
     const [inputs, setInputs] = useState(Array(gridHeight).fill().map(() => Array(gridWidth).fill('')))
     const [dictionary, setDictionary] = useState(dict)
     const [minWordLength, setMinWordLength] = useState(3)
+
+    const [warningText, setWarningText] = useState('')
     const [processing, setProcessing] = useState(false)
     const [foundWords, setFoundWords] = useState([])
 
@@ -107,25 +109,42 @@ const Main = () => {
                             let stateClone = deepCopy(inputs)
                             stateClone[i][j] = newValue.toUpperCase()
                             setInputs(stateClone)
+                            setFoundWords({})
                         }} />
+                        <div className={classes.controlPanel}>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                disabled={processing}
+                                onClick={() => {
+                                    if (!inputs.every(row => row.every(item => checkValidInput(item)))) {
+                                        setWarningText('Please fill in grid correctly')
+                                        return
+                                    }
+                                    findWords(inputs)
+                                }}>
+                                Find Words
+                            </Button>
+                            <Typography color='error'>
+                                {warningText}
+                            </Typography>
+                        </div>
                     </Paper>
                 </Grid>
                 <Grid item xs={isPortraitDevice ? 12 : 4}>
                     <Paper className={classes.gridPaper}>
-                        <Button
-                            variant='contained'
-                            color='primary'
-                            disabled={processing}
-                            onClick={() => {
-                                if (!inputs.every(row => row.every(item => checkValidInput(item)))) {
-                                    alert("Please fill in grid correctly")
-                                    return
+                        {
+                            <Typography variant='h4'>
+                                {
+                                    _.isEmpty(foundWords)
+                                        ? 'Fill in grid to begin'
+                                        : `${Object.entries(foundWords).reduce((acc, [wordLen, words]) => acc + words.length, 0)} Words Found`
                                 }
-                                console.log('Start')
-                                findWords(inputs)
-                            }}>
-                            Find Words
-                        </Button>
+                            </Typography>
+                        }
+                        {
+                            Object.entries(foundWords).reverse().map(([wordLen, words]) => words.map(({ string }) => <p key={string}>{string}</p>))
+                        }
                     </Paper>
                 </Grid>
 
