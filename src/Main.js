@@ -24,12 +24,13 @@ const Main = () => {
     const isPortraitDevice = useMediaQuery('(max-aspect-ratio: 11/10)')
 
     // State
-    const [gridWidth, setGridWidth] = useState(3)
-    const [gridHeight, setGridHeight] = useState(3)
+    const [gridWidth, setGridWidth] = useState(4)
+    const [gridHeight, setGridHeight] = useState(4)
     const [inputs, setInputs] = useState(Array(gridHeight).fill().map(() => Array(gridWidth).fill('')))
     const [dictionary, setDictionary] = useState(dict)
     const [minWordLength, setMinWordLength] = useState(3)
     const [processing, setProcessing] = useState(false)
+    const [foundWords, setFoundWords] = useState([])
 
 
     function handlePaths(paths) {
@@ -43,7 +44,11 @@ const Main = () => {
         const uniqResults = _.uniqBy(results, 'string')
         const groupedResults = _.groupBy(uniqResults, ({ string }) => string.length)
 
-        console.log(groupedResults)
+        for (const key of Object.keys(groupedResults)) {
+            groupedResults[key] = _.orderBy(groupedResults[key], ['string'], ['asc'])
+        }
+
+        setFoundWords(groupedResults)
     }
 
     function deepCopy(data) {
