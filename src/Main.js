@@ -5,8 +5,13 @@ import {
     Grid,
     Paper,
     Typography,
-    Button
+    Button,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
 } from '@material-ui/core/index'
+
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
@@ -143,7 +148,20 @@ const Main = () => {
                             </Typography>
                         }
                         {
-                            Object.entries(foundWords).reverse().map(([wordLen, words]) => words.map(({ string }) => <p key={string}>{string}</p>))
+                            Object.entries(foundWords).reverse().map(([wordLen, words]) => (
+                                <Accordion key={`${wordLen}-accordion`}>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls={`${wordLen}-letter-content`}
+                                        id={`${wordLen}-letter-header`}
+                                    >
+                                        <Typography variant='h5'>{`${wordLen} letter words`}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails style={{display: 'block'}}>
+                                        {words.map(({ string }) => <Typography key={string}>{`${string}\n`}</Typography>)}
+                                    </AccordionDetails>
+                                </Accordion>
+                            ))
                         }
                     </Paper>
                 </Grid>
