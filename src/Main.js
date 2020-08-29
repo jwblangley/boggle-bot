@@ -54,10 +54,15 @@ const Main = () => {
     const [highlightPath, setHighlightPath] = useState([])
 
 
+    function clearResults() {
+        setFoundWords({})
+    }
+
     function setBoardSize(size) {
         setGridWidth(size)
         setGridHeight(size)
         setInputs(Array(size).fill().map(() => Array(size).fill('')))
+        clearResults()
     }
 
     function handlePaths(paths) {
@@ -160,7 +165,7 @@ const Main = () => {
                                 let stateClone = deepCopy(inputs)
                                 stateClone[i][j] = newValue.toUpperCase()
                                 setInputs(stateClone)
-                                setFoundWords({})
+                                clearResults()
                             }}
                         />
                         <div className={classes.controlPanel}>
@@ -215,6 +220,7 @@ const Main = () => {
                                                 value={minWordLength}
                                                 onChange={e => {
                                                     setMinWordLength(e.target.value)
+                                                    clearResults()
                                                 }}
                                             >
                                                 <MenuItem value={1}>1</MenuItem>
@@ -238,6 +244,7 @@ const Main = () => {
                                                 fr.onload = (e) => {
                                                     setDictionary(e.target.result.split('\n'))
                                                     setDictName(target.files[0].name)
+                                                    clearResults()
                                                 }
                                             }}
                                         />
