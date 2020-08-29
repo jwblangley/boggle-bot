@@ -39,6 +39,7 @@ const Main = () => {
     const [warningText, setWarningText] = useState('')
     const [processing, setProcessing] = useState(false)
     const [foundWords, setFoundWords] = useState([])
+    const [highlightWord, setHighlightWord] = useState('')
 
 
     function handlePaths(paths) {
@@ -94,6 +95,11 @@ const Main = () => {
 
     }
 
+    function runHighlightAnimation(path, onFinish) {
+        console.log(path)
+        setTimeout(onFinish, 1000)
+    }
+
     return (
         <div>
             <div className={classes.topBar}>
@@ -142,7 +148,8 @@ const Main = () => {
                         {
                             <Typography variant='h4'>
                                 {
-                                    _.isEmpty(foundWords)
+                                    processing ? 'Processing...'
+                                    : _.isEmpty(foundWords)
                                         ? 'Fill in grid to begin'
                                         : `${Object.entries(foundWords).reduce((acc, [wordLen, words]) => acc + words.length, 0)} Words Found`
                                 }
@@ -150,7 +157,7 @@ const Main = () => {
                         }
                         {
                             Object.entries(foundWords).length > 0 &&
-                                (<div className={classes.resultsBox}>
+                            (<div className={classes.resultsBox}>
                                 {
                                     Object.entries(foundWords).reverse().map(([wordLen, words]) => (
                                         <Accordion key={`${wordLen}-accordion`} >
@@ -162,12 +169,23 @@ const Main = () => {
                                                 <Typography variant='h5'>{`${wordLen} letter words`}</Typography>
                                             </AccordionSummary>
                                             <AccordionDetails style={{ display: 'block' }}>
-                                                {words.map(({ string }) => <ResultBar key={string} word={string} />)}
+                                                {words.map(({ string, path }) =>
+                                                    <ResultBar
+                                                        key={string}
+                                                        word={string}
+                                                        isHighlighting={highlightWord === string}
+                                                        onHighlight={() => {
+                                                            setHighlightWord(string)
+                                                            runHighlightAnimation(path,
+                                                                () => setHighlightWord(''))
+                                                        }}
+                                                    />
+                                                )}
                                             </AccordionDetails>
                                         </Accordion>
                                     ))
                                 }
-                                </div>)
+                            </div>)
                         }
                     </Paper>
                 </Grid>

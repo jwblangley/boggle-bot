@@ -4,7 +4,7 @@ import {
     Paper, Typography
 } from '@material-ui/core/index'
 
-import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityIcon from '@material-ui/icons/Visibility'
 
 import useStyles from './style'
 
@@ -17,7 +17,12 @@ const ResultBar = ({ word, isHighlighting, onHighlight }) => {
             <VisibilityIcon
                 className={classes.showIcon}
                 color={isHighlighting ? 'primary' : 'disabled'}
-                onClick={onHighlight}
+                style={!isHighlighting ? {'cursor': 'pointer'} : {}}
+                onClick={() => {
+                    if (!isHighlighting) {
+                        onHighlight()
+                    }
+                }}
             />
         </Paper>
     )

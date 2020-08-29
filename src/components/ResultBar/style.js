@@ -11,8 +11,7 @@ const useStyles = makeStyles(theme => ({
     showIcon: {
         display: 'inline-block',
         verticalAlign: 'middle',
-        float: 'right',
-        cursor: 'pointer'
+        float: 'right'
     }
 }))
 
