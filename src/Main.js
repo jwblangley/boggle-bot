@@ -41,6 +41,7 @@ const Main = () => {
     const [foundWords, setFoundWords] = useState([])
 
     const [highlightWord, setHighlightWord] = useState('')
+    const [highlightPath, setHighlightPath] = useState([])
 
 
     function handlePaths(paths) {
@@ -97,7 +98,7 @@ const Main = () => {
     }
 
     function runHighlightAnimation(path, onFinish) {
-        const animInterval = 500
+        const animInterval = 200
         const holdOnEnd = 1000
 
         let pathIndex = 0
@@ -105,12 +106,16 @@ const Main = () => {
         const animId = setInterval(() => {
             if (pathIndex >= path.length) {
                 clearInterval(animId)
-                setTimeout(onFinish, holdOnEnd)
+                setTimeout(() => {
+                    setHighlightPath([])
+                    onFinish()
+                }, holdOnEnd)
                 return
             }
 
-            console.log(path[pathIndex])
+            setHighlightPath(prev => [...prev, path[pathIndex]])
             pathIndex++
+
         }, animInterval)
     }
 
@@ -131,12 +136,17 @@ const Main = () => {
             >
                 <Grid item xs={isPortraitDevice ? 12 : 8}>
                     <Paper className={classes.gridPaper}>
-                        <InputGrid values={inputs} checkValidInput={checkValidInput} onChange={(i, j, newValue) => {
-                            let stateClone = deepCopy(inputs)
-                            stateClone[i][j] = newValue.toUpperCase()
-                            setInputs(stateClone)
-                            setFoundWords({})
-                        }} />
+                        <InputGrid
+                            values={inputs}
+                            checkValidInput={checkValidInput}
+                            highlights={highlightPath}
+                            onChange={(i, j, newValue) => {
+                                let stateClone = deepCopy(inputs)
+                                stateClone[i][j] = newValue.toUpperCase()
+                                setInputs(stateClone)
+                                setFoundWords({})
+                            }}
+                        />
                         <div className={classes.controlPanel}>
                             <Button
                                 variant='contained'
@@ -162,10 +172,10 @@ const Main = () => {
                         {
                             <Typography variant='h4'>
                                 {
-                                    processing ? 'Processing...'
-                                    : _.isEmpty(foundWords)
-                                        ? 'Fill in grid to begin'
-                                        : `${Object.entries(foundWords).reduce((acc, [wordLen, words]) => acc + words.length, 0)} Words Found`
+                                    processing ? 'Finding words...'
+                                        : _.isEmpty(foundWords)
+                                            ? 'Fill in grid to begin'
+                                            : `${Object.entries(foundWords).reduce((acc, [wordLen, words]) => acc + words.length, 0)} Words Found`
                                 }
                             </Typography>
                         }
@@ -180,7 +190,7 @@ const Main = () => {
                                                 aria-controls={`${wordLen}-letter-content`}
                                                 id={`${wordLen}-letter-header`}
                                             >
-                                                <Typography variant='h5'>{`${wordLen} letter words`}</Typography>
+                                                <Typography variant='h5'>{`${wordLen}-letter words`}</Typography>
                                             </AccordionSummary>
                                             <AccordionDetails style={{ display: 'block' }}>
                                                 {words.map(({ string, path }) =>

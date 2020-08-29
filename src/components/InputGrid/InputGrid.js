@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 
 import {
     Grid,
@@ -7,7 +8,7 @@ import {
 
 import useStyles from './style'
 
-const InputGrid = ({values, onChange, checkValidInput}) => {
+const InputGrid = ({values, onChange, highlights, checkValidInput}) => {
     const classes = useStyles()
 
     const width = values[0].length
@@ -31,22 +32,26 @@ const InputGrid = ({values, onChange, checkValidInput}) => {
                                 key={`item${i}${j}`}
                                 className={classes.boardItem}
                             >
-                                <TextField
-                                    variant="outlined"
-                                    error={!checkValidInput(values[i][j])}
-                                    inputProps={{ style: {
-                                        'width': `${45 / width}vmin`,
-                                        'height': `${45 / width}vmin`,
-                                        'fontSize': '3em',
-                                        'textAlign': 'center',
-                                        'boxSizing': 'border-box'
-                                    }}}
+                                <div
+                                    className={`${classes.inputBorder} ${highlights.some(h => _.isEqual(h, [i, j])) ? classes.highlight : ''}`}
+                                >
+                                    <TextField
+                                        variant="outlined"
+                                        error={!checkValidInput(values[i][j])}
+                                        inputProps={{ style: {
+                                            'width': `${45 / width}vmin`,
+                                            'height': `${45 / width}vmin`,
+                                            'fontSize': '3em',
+                                            'textAlign': 'center',
+                                            'boxSizing': 'border-box'
+                                        }}}
 
-                                    value={value}
-                                    onChange={e => {
-                                        onChange(i, j, e.target.value)
-                                    }}
-                                />
+                                        value={value}
+                                        onChange={e => {
+                                            onChange(i, j, e.target.value)
+                                        }}
+                                    />
+                                </div>
                             </Grid>
                         ))}
                     </Grid>
