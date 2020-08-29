@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core/index'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
@@ -37,6 +38,7 @@ const Main = () => {
     const [minWordLength, setMinWordLength] = useState(3)
 
     const [warningText, setWarningText] = useState('')
+    const [showOptionsPanel, setShowOptionsPanel] = useState(false)
     const [processing, setProcessing] = useState(false)
     const [foundWords, setFoundWords] = useState([])
 
@@ -164,6 +166,20 @@ const Main = () => {
                             <Typography color='error'>
                                 {warningText}
                             </Typography>
+                            <div className={classes.optionsPanel}>
+                                <div
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => setShowOptionsPanel(prev => !prev)}
+                                >
+                                    <Typography style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+                                        {showOptionsPanel ? 'Hide options' : 'Show options'}
+                                    </Typography>
+                                    {showOptionsPanel
+                                        ? <ExpandLessIcon style={{ display: 'inline-block', verticalAlign: 'middle' }} />
+                                        : <ExpandMoreIcon style={{ display: 'inline-block', verticalAlign: 'middle' }} />
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </Paper>
                 </Grid>
