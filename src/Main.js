@@ -37,10 +37,14 @@ const Main = () => {
     const theme = useTheme()
     const isPortraitDevice = useMediaQuery('(max-aspect-ratio: 11/10)')
 
+    function genEmptyGrid(width, height) {
+        return Array(height).fill().map(() => Array(width).fill(''))
+    }
+
     // State
     const [gridWidth, setGridWidth] = useState(4)
     const [gridHeight, setGridHeight] = useState(4)
-    const [inputs, setInputs] = useState(Array(gridHeight).fill().map(() => Array(gridWidth).fill('')))
+    const [inputs, setInputs] = useState(genEmptyGrid(gridWidth, gridHeight))
     const [dictName, setDictName] = useState('built in')
     const [dictionary, setDictionary] = useState(dict)
     const [minWordLength, setMinWordLength] = useState(3)
@@ -61,7 +65,7 @@ const Main = () => {
     function setBoardSize(size) {
         setGridWidth(size)
         setGridHeight(size)
-        setInputs(Array(size).fill().map(() => Array(size).fill('')))
+        setInputs(genEmptyGrid(size, size))
         clearResults()
     }
 
