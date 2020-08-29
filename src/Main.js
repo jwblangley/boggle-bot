@@ -31,6 +31,8 @@ import useStyles from './style'
 import InputGrid from './components/InputGrid/InputGrid'
 import ResultBar from './components/ResultBar/ResultBar';
 
+const ALLOWED_CHARS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'QU', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
 const Main = () => {
 
     const classes = useStyles()
@@ -93,7 +95,8 @@ const Main = () => {
     }
 
     function checkValidInput(str) {
-        return str.match(/^([A-Z]|QU)$/g)
+        // /^([A-Z]|QU)$/g
+        return ALLOWED_CHARS.includes(str) || str === 'Q'
     }
 
     function findWords(inputGrid) {
@@ -196,6 +199,20 @@ const Main = () => {
                                 onClick={clearGrid}
                             >
                                 Clear grid
+                            </Button>
+                            <Button
+                                className={classes.actionButton}
+                                variant='contained'
+                                color='primary'
+                                disabled={processing}
+                                onClick={() => {
+                                    let newInputs = genEmptyGrid(gridWidth, gridHeight)
+                                    newInputs = newInputs.map(row => row.map(i => ALLOWED_CHARS[Math.floor(Math.random() * ALLOWED_CHARS.length)]))
+                                    setInputs(newInputs)
+                                    clearResults()
+                                }}
+                            >
+                                Randomly fill grid
                             </Button>
                             <Typography color='error'>
                                 {warningText}
