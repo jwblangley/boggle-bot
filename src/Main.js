@@ -41,6 +41,7 @@ const Main = () => {
     const [gridWidth, setGridWidth] = useState(4)
     const [gridHeight, setGridHeight] = useState(4)
     const [inputs, setInputs] = useState(Array(gridHeight).fill().map(() => Array(gridWidth).fill('')))
+    const [dictName, setDictName] = useState('built in')
     const [dictionary, setDictionary] = useState(dict)
     const [minWordLength, setMinWordLength] = useState(3)
 
@@ -231,6 +232,14 @@ const Main = () => {
                                             multiple
                                             type='file'
                                             hidden
+                                            onChange={({ target }) => {
+                                                const fr = new FileReader()
+                                                fr.readAsText(target.files[0])
+                                                fr.onload = (e) => {
+                                                    setDictionary(e.target.result.split('\n'))
+                                                    setDictName(target.files[0].name)
+                                                }
+                                            }}
                                         />
                                         <label htmlFor='dictionary-upload'>
                                             <FormControl className={classes.control}>
@@ -240,7 +249,7 @@ const Main = () => {
                                                 <FormHelperText
                                                     style={{ paddingLeft: theme.spacing(1), paddingRight: theme.spacing(1)}}
                                                 >
-                                                    Test
+                                                    {`Current dictionary: ${dictName}`}
                                                 </FormHelperText>
                                             </FormControl>
                                         </label>
