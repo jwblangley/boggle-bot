@@ -41,6 +41,9 @@ const useStyles = makeStyles(theme => ({
     },
     optionsPanel: {
         marginTop: theme.spacing(2)
+    },
+    control:{
+        margin: theme.spacing(1)
     }
 }))
 

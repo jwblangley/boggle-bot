@@ -178,7 +178,7 @@ const Main = () => {
                             </Typography>
                             <div className={classes.optionsPanel}>
                                 <div
-                                    style={{ cursor: 'pointer' }}
+                                    style={{ cursor: 'pointer', display: 'inline-block' }}
                                     onClick={() => setShowOptionsPanel(prev => !prev)}
                                 >
                                     <Typography style={{ display: 'inline-block', verticalAlign: 'middle' }}>
@@ -191,7 +191,7 @@ const Main = () => {
                                 </div>
                                 {showOptionsPanel && (
                                     <Paper className={`${classes.paper} ${classes.optionsPanel}`}>
-                                        <FormControl>
+                                        <FormControl className={classes.control}>
                                             <Select
                                                 value={gridWidth}
                                                 onChange={e => {
@@ -205,6 +205,21 @@ const Main = () => {
                                                 <MenuItem value={6}>6</MenuItem>
                                             </Select>
                                             <FormHelperText>Grid size</FormHelperText>
+                                        </FormControl>
+                                        <FormControl className={classes.control}>
+                                            <Select
+                                                value={minWordLength}
+                                                onChange={e => {
+                                                    setMinWordLength(e.target.value)
+                                                }}
+                                            >
+                                                <MenuItem value={1}>1</MenuItem>
+                                                <MenuItem value={2}>2</MenuItem>
+                                                <MenuItem value={3}>3</MenuItem>
+                                                <MenuItem value={4}>4</MenuItem>
+                                                <MenuItem value={5}>5</MenuItem>
+                                            </Select>
+                                            <FormHelperText>Minimum word length</FormHelperText>
                                         </FormControl>
                                     </Paper>
                                 )}
