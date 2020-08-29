@@ -6,9 +6,13 @@ import {
     Paper,
     Typography,
     Button,
+    Select,
+    MenuItem,
     Accordion,
     AccordionSummary,
     AccordionDetails,
+    FormControl,
+    FormHelperText,
 } from '@material-ui/core/index'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -45,6 +49,12 @@ const Main = () => {
     const [highlightWord, setHighlightWord] = useState('')
     const [highlightPath, setHighlightPath] = useState([])
 
+
+    function setBoardSize(size) {
+        setGridWidth(size)
+        setGridHeight(size)
+        setInputs(Array(size).fill().map(() => Array(size).fill('')))
+    }
 
     function handlePaths(paths) {
         const results = paths
@@ -179,6 +189,25 @@ const Main = () => {
                                         : <ExpandMoreIcon style={{ display: 'inline-block', verticalAlign: 'middle' }} />
                                     }
                                 </div>
+                                {showOptionsPanel && (
+                                    <Paper className={`${classes.paper} ${classes.optionsPanel}`}>
+                                        <FormControl>
+                                            <Select
+                                                value={gridWidth}
+                                                onChange={e => {
+                                                    setBoardSize(e.target.value)
+                                                }}
+                                            >
+                                                <MenuItem value={2}>2</MenuItem>
+                                                <MenuItem value={3}>3</MenuItem>
+                                                <MenuItem value={4}>4</MenuItem>
+                                                <MenuItem value={5}>5</MenuItem>
+                                                <MenuItem value={6}>6</MenuItem>
+                                            </Select>
+                                            <FormHelperText>Grid size</FormHelperText>
+                                        </FormControl>
+                                    </Paper>
+                                )}
                             </div>
                         </div>
                     </Paper>
