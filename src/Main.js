@@ -22,6 +22,7 @@ import worker from 'workerize-loader?inline!./util/allPathsWorker' // eslint-dis
 import useStyles from './style'
 
 import InputGrid from './components/InputGrid/InputGrid'
+import ResultBar from './components/ResultBar/ResultBar';
 
 const Main = () => {
 
@@ -148,20 +149,25 @@ const Main = () => {
                             </Typography>
                         }
                         {
-                            Object.entries(foundWords).reverse().map(([wordLen, words]) => (
-                                <Accordion key={`${wordLen}-accordion`}>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        aria-controls={`${wordLen}-letter-content`}
-                                        id={`${wordLen}-letter-header`}
-                                    >
-                                        <Typography variant='h5'>{`${wordLen} letter words`}</Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails style={{display: 'block'}}>
-                                        {words.map(({ string }) => <Typography key={string}>{`${string}\n`}</Typography>)}
-                                    </AccordionDetails>
-                                </Accordion>
-                            ))
+                            Object.entries(foundWords).length > 0 &&
+                                (<div className={classes.resultsBox}>
+                                {
+                                    Object.entries(foundWords).reverse().map(([wordLen, words]) => (
+                                        <Accordion key={`${wordLen}-accordion`} >
+                                            <AccordionSummary
+                                                expandIcon={<ExpandMoreIcon />}
+                                                aria-controls={`${wordLen}-letter-content`}
+                                                id={`${wordLen}-letter-header`}
+                                            >
+                                                <Typography variant='h5'>{`${wordLen} letter words`}</Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails style={{ display: 'block' }}>
+                                                {words.map(({ string }) => <ResultBar key={string} word={string} />)}
+                                            </AccordionDetails>
+                                        </Accordion>
+                                    ))
+                                }
+                                </div>)
                         }
                     </Paper>
                 </Grid>

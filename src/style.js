@@ -28,6 +28,9 @@ const useStyles = makeStyles(theme => ({
     },
     controlPanel: {
         marginTop: theme.spacing(2)
+    },
+    resultsBox: {
+        marginTop: theme.spacing(2)
     }
 }))
 
