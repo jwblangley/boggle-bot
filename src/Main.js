@@ -22,6 +22,7 @@ import worker from 'workerize-loader?inline!./util/allPathsWorker' // eslint-dis
 import useStyles from './style'
 
 import InputGrid from './components/InputGrid/InputGrid'
+import ResultBar from './components/ResultBar/ResultBar';
 
 const Main = () => {
 
@@ -38,6 +39,9 @@ const Main = () => {
     const [warningText, setWarningText] = useState('')
     const [processing, setProcessing] = useState(false)
     const [foundWords, setFoundWords] = useState([])
+
+    const [highlightWord, setHighlightWord] = useState('')
+    const [highlightPath, setHighlightPath] = useState([])
 
 
     function handlePaths(paths) {
@@ -93,6 +97,28 @@ const Main = () => {
 
     }
 
+    function runHighlightAnimation(path, onFinish) {
+        const animInterval = 200
+        const holdOnEnd = 1000
+
+        let pathIndex = 0
+
+        const animId = setInterval(() => {
+            if (pathIndex >= path.length) {
+                clearInterval(animId)
+                setTimeout(() => {
+                    setHighlightPath([])
+                    onFinish()
+                }, holdOnEnd)
+                return
+            }
+
+            setHighlightPath(prev => [...prev, path[pathIndex]])
+            pathIndex++
+
+        }, animInterval)
+    }
+
     return (
         <div>
             <div className={classes.topBar}>
@@ -110,12 +136,17 @@ const Main = () => {
             >
                 <Grid item xs={isPortraitDevice ? 12 : 8}>
                     <Paper className={classes.gridPaper}>
-                        <InputGrid values={inputs} checkValidInput={checkValidInput} onChange={(i, j, newValue) => {
-                            let stateClone = deepCopy(inputs)
-                            stateClone[i][j] = newValue.toUpperCase()
-                            setInputs(stateClone)
-                            setFoundWords({})
-                        }} />
+                        <InputGrid
+                            values={inputs}
+                            checkValidInput={checkValidInput}
+                            highlights={highlightPath}
+                            onChange={(i, j, newValue) => {
+                                let stateClone = deepCopy(inputs)
+                                stateClone[i][j] = newValue.toUpperCase()
+                                setInputs(stateClone)
+                                setFoundWords({})
+                            }}
+                        />
                         <div className={classes.controlPanel}>
                             <Button
                                 variant='contained'
@@ -141,27 +172,45 @@ const Main = () => {
                         {
                             <Typography variant='h4'>
                                 {
-                                    _.isEmpty(foundWords)
-                                        ? 'Fill in grid to begin'
-                                        : `${Object.entries(foundWords).reduce((acc, [wordLen, words]) => acc + words.length, 0)} Words Found`
+                                    processing ? 'Finding words...'
+                                        : _.isEmpty(foundWords)
+                                            ? 'Fill in grid to begin'
+                                            : `${Object.entries(foundWords).reduce((acc, [wordLen, words]) => acc + words.length, 0)} Words Found`
                                 }
                             </Typography>
                         }
                         {
-                            Object.entries(foundWords).reverse().map(([wordLen, words]) => (
-                                <Accordion key={`${wordLen}-accordion`}>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        aria-controls={`${wordLen}-letter-content`}
-                                        id={`${wordLen}-letter-header`}
-                                    >
-                                        <Typography variant='h5'>{`${wordLen} letter words`}</Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails style={{display: 'block'}}>
-                                        {words.map(({ string }) => <Typography key={string}>{`${string}\n`}</Typography>)}
-                                    </AccordionDetails>
-                                </Accordion>
-                            ))
+                            Object.entries(foundWords).length > 0 &&
+                            (<div className={classes.resultsBox}>
+                                {
+                                    Object.entries(foundWords).reverse().map(([wordLen, words]) => (
+                                        <Accordion key={`${wordLen}-accordion`} >
+                                            <AccordionSummary
+                                                expandIcon={<ExpandMoreIcon />}
+                                                aria-controls={`${wordLen}-letter-content`}
+                                                id={`${wordLen}-letter-header`}
+                                            >
+                                                <Typography variant='h5'>{`${wordLen}-letter words`}</Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails style={{ display: 'block' }}>
+                                                {words.map(({ string, path }) =>
+                                                    <ResultBar
+                                                        key={string}
+                                                        word={string}
+                                                        isHighlighting={highlightWord === string}
+                                                        canHighlight={highlightWord === ''}
+                                                        onHighlight={() => {
+                                                            setHighlightWord(string)
+                                                            runHighlightAnimation(path,
+                                                                () => setHighlightWord(''))
+                                                        }}
+                                                    />
+                                                )}
+                                            </AccordionDetails>
+                                        </Accordion>
+                                    ))
+                                }
+                            </div>)
                         }
                     </Paper>
                 </Grid>

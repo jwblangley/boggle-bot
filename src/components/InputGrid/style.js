@@ -10,7 +10,15 @@ const useStyles = makeStyles(theme => ({
     },
     boardItem: {
         padding: 0,
-        margin: theme.spacing(1),
+        margin: theme.spacing(0.75),
+    },
+    inputBorder: {
+        border: `4px solid`,
+        borderColor: theme.palette.background.paper,
+        borderRadius: '8px'
+    },
+    highlight: {
+        borderColor: theme.palette.secondary.main
     }
 }))
 
