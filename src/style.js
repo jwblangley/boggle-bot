@@ -26,8 +26,12 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'center',
         width: '100%',
     },
-    gridPaper: {
+    paper: {
         padding: theme.spacing(2)
+    },
+    inputGridPaper: {
+        position: 'sticky',
+        top: theme.spacing(12.5)
     },
     controlPanel: {
         marginTop: theme.spacing(2)
