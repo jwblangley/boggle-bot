@@ -174,6 +174,7 @@ const Main = () => {
                                                         key={string}
                                                         word={string}
                                                         isHighlighting={highlightWord === string}
+                                                        canHighlight={highlightWord === ''}
                                                         onHighlight={() => {
                                                             setHighlightWord(string)
                                                             runHighlightAnimation(path,

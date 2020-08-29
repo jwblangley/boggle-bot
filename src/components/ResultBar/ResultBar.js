@@ -8,7 +8,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 
 import useStyles from './style'
 
-const ResultBar = ({ word, isHighlighting, onHighlight }) => {
+const ResultBar = ({ word, isHighlighting, canHighlight, onHighlight }) => {
     const classes = useStyles()
 
     return (
@@ -17,9 +17,9 @@ const ResultBar = ({ word, isHighlighting, onHighlight }) => {
             <VisibilityIcon
                 className={classes.showIcon}
                 color={isHighlighting ? 'primary' : 'disabled'}
-                style={!isHighlighting ? {'cursor': 'pointer'} : {}}
+                style={canHighlight ? {'cursor': 'pointer'} : {}}
                 onClick={() => {
-                    if (!isHighlighting) {
+                    if (canHighlight) {
                         onHighlight()
                     }
                 }}
