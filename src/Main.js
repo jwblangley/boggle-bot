@@ -39,6 +39,7 @@ const Main = () => {
     const [warningText, setWarningText] = useState('')
     const [processing, setProcessing] = useState(false)
     const [foundWords, setFoundWords] = useState([])
+
     const [highlightWord, setHighlightWord] = useState('')
 
 
@@ -96,8 +97,21 @@ const Main = () => {
     }
 
     function runHighlightAnimation(path, onFinish) {
-        console.log(path)
-        setTimeout(onFinish, 1000)
+        const animInterval = 500
+        const holdOnEnd = 1000
+
+        let pathIndex = 0
+
+        const animId = setInterval(() => {
+            if (pathIndex >= path.length) {
+                clearInterval(animId)
+                setTimeout(onFinish, holdOnEnd)
+                return
+            }
+
+            console.log(path[pathIndex])
+            pathIndex++
+        }, animInterval)
     }
 
     return (
