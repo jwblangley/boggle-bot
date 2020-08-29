@@ -38,6 +38,12 @@ const useStyles = makeStyles(theme => ({
     },
     resultsBox: {
         marginTop: theme.spacing(2)
+    },
+    optionsPanel: {
+        marginTop: theme.spacing(2)
+    },
+    control:{
+        margin: theme.spacing(1)
     }
 }))
 

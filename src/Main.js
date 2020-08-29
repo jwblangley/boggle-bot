@@ -1,17 +1,24 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
 
+import { useTheme } from "@material-ui/core/styles";
+
 import {
     Grid,
     Paper,
     Typography,
     Button,
+    Select,
+    MenuItem,
     Accordion,
     AccordionSummary,
     AccordionDetails,
+    FormControl,
+    FormHelperText,
 } from '@material-ui/core/index'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
@@ -27,22 +34,31 @@ import ResultBar from './components/ResultBar/ResultBar';
 const Main = () => {
 
     const classes = useStyles()
+    const theme = useTheme()
     const isPortraitDevice = useMediaQuery('(max-aspect-ratio: 11/10)')
 
     // State
     const [gridWidth, setGridWidth] = useState(4)
     const [gridHeight, setGridHeight] = useState(4)
     const [inputs, setInputs] = useState(Array(gridHeight).fill().map(() => Array(gridWidth).fill('')))
+    const [dictName, setDictName] = useState('built in')
     const [dictionary, setDictionary] = useState(dict)
     const [minWordLength, setMinWordLength] = useState(3)
 
     const [warningText, setWarningText] = useState('')
+    const [showOptionsPanel, setShowOptionsPanel] = useState(false)
     const [processing, setProcessing] = useState(false)
     const [foundWords, setFoundWords] = useState([])
 
     const [highlightWord, setHighlightWord] = useState('')
     const [highlightPath, setHighlightPath] = useState([])
 
+
+    function setBoardSize(size) {
+        setGridWidth(size)
+        setGridHeight(size)
+        setInputs(Array(size).fill().map(() => Array(size).fill('')))
+    }
 
     function handlePaths(paths) {
         const results = paths
@@ -164,6 +180,82 @@ const Main = () => {
                             <Typography color='error'>
                                 {warningText}
                             </Typography>
+                            <div className={classes.optionsPanel}>
+                                <div
+                                    style={{ cursor: 'pointer', display: 'inline-block' }}
+                                    onClick={() => setShowOptionsPanel(prev => !prev)}
+                                >
+                                    <Typography style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+                                        {showOptionsPanel ? 'Hide options' : 'Show options'}
+                                    </Typography>
+                                    {showOptionsPanel
+                                        ? <ExpandLessIcon style={{ display: 'inline-block', verticalAlign: 'middle' }} />
+                                        : <ExpandMoreIcon style={{ display: 'inline-block', verticalAlign: 'middle' }} />
+                                    }
+                                </div>
+                                {showOptionsPanel && (
+                                    <Paper className={`${classes.paper} ${classes.optionsPanel}`}>
+                                        <FormControl className={classes.control}>
+                                            <Select
+                                                value={gridWidth}
+                                                onChange={e => {
+                                                    setBoardSize(e.target.value)
+                                                }}
+                                            >
+                                                <MenuItem value={2}>2</MenuItem>
+                                                <MenuItem value={3}>3</MenuItem>
+                                                <MenuItem value={4}>4</MenuItem>
+                                                <MenuItem value={5}>5</MenuItem>
+                                                <MenuItem value={6}>6</MenuItem>
+                                            </Select>
+                                            <FormHelperText>Grid size</FormHelperText>
+                                        </FormControl>
+                                        <FormControl className={classes.control}>
+                                            <Select
+                                                value={minWordLength}
+                                                onChange={e => {
+                                                    setMinWordLength(e.target.value)
+                                                }}
+                                            >
+                                                <MenuItem value={1}>1</MenuItem>
+                                                <MenuItem value={2}>2</MenuItem>
+                                                <MenuItem value={3}>3</MenuItem>
+                                                <MenuItem value={4}>4</MenuItem>
+                                                <MenuItem value={5}>5</MenuItem>
+                                            </Select>
+                                            <FormHelperText>Minimum word length</FormHelperText>
+                                        </FormControl>
+                                        <input
+                                            accept='text/*'
+                                            className={classes.input}
+                                            id='dictionary-upload'
+                                            multiple
+                                            type='file'
+                                            hidden
+                                            onChange={({ target }) => {
+                                                const fr = new FileReader()
+                                                fr.readAsText(target.files[0])
+                                                fr.onload = (e) => {
+                                                    setDictionary(e.target.result.split('\n'))
+                                                    setDictName(target.files[0].name)
+                                                }
+                                            }}
+                                        />
+                                        <label htmlFor='dictionary-upload'>
+                                            <FormControl className={classes.control}>
+                                                <Button color='primary' component='span'>
+                                                    Upload custom dictionary
+                                                </Button>
+                                                <FormHelperText
+                                                    style={{ paddingLeft: theme.spacing(1), paddingRight: theme.spacing(1)}}
+                                                >
+                                                    {`Current dictionary: ${dictName}`}
+                                                </FormHelperText>
+                                            </FormControl>
+                                        </label>
+                                    </Paper>
+                                )}
+                            </div>
                         </div>
                     </Paper>
                 </Grid>
