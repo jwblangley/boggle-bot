@@ -19,7 +19,10 @@ const useStyles = makeStyles(theme => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(5),
+        paddingLeft: theme.spacing(2.5),
+        paddingRight: theme.spacing(2.5),
+        paddingTop: theme.spacing(1),
+        margin: 0,
         textAlign: 'center',
         width: '100%',
     },
