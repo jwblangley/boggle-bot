@@ -62,6 +62,11 @@ const Main = () => {
         setFoundWords({})
     }
 
+    function clearGrid() {
+        setInputs(genEmptyGrid(gridWidth, gridHeight))
+        clearResults()
+    }
+
     function setBoardSize(size) {
         setGridWidth(size)
         setGridHeight(size)
@@ -169,99 +174,112 @@ const Main = () => {
                         />
                         <div className={classes.controlPanel}>
                             <Button
+                                className={classes.actionButton}
                                 variant='contained'
                                 color='primary'
                                 disabled={processing}
                                 onClick={() => {
                                     if (!inputs.every(row => row.every(item => checkValidInput(item)))) {
                                         setWarningText('Please fill in grid correctly')
+                                        setTimeout(() => setWarningText(''), 3000)
                                         return
                                     }
                                     findWords(inputs)
                                 }}>
                                 Find Words
                             </Button>
+                            <Button
+                                className={classes.actionButton}
+                                variant='contained'
+                                color='primary'
+                                disabled={processing}
+                                onClick={clearGrid}
+                            >
+                                Clear grid
+                            </Button>
                             <Typography color='error'>
                                 {warningText}
                             </Typography>
-                            <div className={classes.optionsPanel}>
-                                <div
-                                    style={{ cursor: 'pointer', display: 'inline-block' }}
-                                    onClick={() => setShowOptionsPanel(prev => !prev)}
-                                >
-                                    <Typography style={{ display: 'inline-block', verticalAlign: 'middle' }}>
-                                        {showOptionsPanel ? 'Hide options' : 'Show options'}
-                                    </Typography>
-                                    {showOptionsPanel
-                                        ? <ExpandLessIcon style={{ display: 'inline-block', verticalAlign: 'middle' }} />
-                                        : <ExpandMoreIcon style={{ display: 'inline-block', verticalAlign: 'middle' }} />
-                                    }
-                                </div>
-                                {showOptionsPanel && (
-                                    <Paper className={`${classes.paper} ${classes.optionsPanel}`}>
-                                        <FormControl className={classes.control}>
-                                            <Select
-                                                value={gridWidth}
-                                                onChange={e => {
-                                                    setBoardSize(e.target.value)
-                                                }}
-                                            >
-                                                <MenuItem value={2}>2</MenuItem>
-                                                <MenuItem value={3}>3</MenuItem>
-                                                <MenuItem value={4}>4</MenuItem>
-                                                <MenuItem value={5}>5</MenuItem>
-                                                <MenuItem value={6}>6</MenuItem>
-                                            </Select>
-                                            <FormHelperText>Grid size</FormHelperText>
-                                        </FormControl>
-                                        <FormControl className={classes.control}>
-                                            <Select
-                                                value={minWordLength}
-                                                onChange={e => {
-                                                    setMinWordLength(e.target.value)
-                                                    clearResults()
-                                                }}
-                                            >
-                                                <MenuItem value={1}>1</MenuItem>
-                                                <MenuItem value={2}>2</MenuItem>
-                                                <MenuItem value={3}>3</MenuItem>
-                                                <MenuItem value={4}>4</MenuItem>
-                                                <MenuItem value={5}>5</MenuItem>
-                                            </Select>
-                                            <FormHelperText>Minimum word length</FormHelperText>
-                                        </FormControl>
-                                        <input
-                                            accept='text/*'
-                                            className={classes.input}
-                                            id='dictionary-upload'
-                                            multiple
-                                            type='file'
-                                            hidden
-                                            onChange={({ target }) => {
-                                                const fr = new FileReader()
-                                                fr.readAsText(target.files[0])
-                                                fr.onload = (e) => {
-                                                    setDictionary(e.target.result.split('\n'))
-                                                    setDictName(target.files[0].name)
-                                                    clearResults()
-                                                }
-                                            }}
-                                        />
-                                        <label htmlFor='dictionary-upload'>
+                            {processing ||
+                                (<div className={classes.optionsPanel}>
+                                    <div
+                                        style={{ cursor: 'pointer', display: 'inline-block' }}
+                                        onClick={() => setShowOptionsPanel(prev => !prev)}
+                                    >
+                                        <Typography style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+                                            {showOptionsPanel ? 'Hide options' : 'Show options'}
+                                        </Typography>
+                                        {showOptionsPanel
+                                            ? <ExpandLessIcon style={{ display: 'inline-block', verticalAlign: 'middle' }} />
+                                            : <ExpandMoreIcon style={{ display: 'inline-block', verticalAlign: 'middle' }} />
+                                        }
+                                    </div>
+                                    {showOptionsPanel && (
+                                        <Paper className={`${classes.paper} ${classes.optionsPanel}`}>
                                             <FormControl className={classes.control}>
-                                                <Button color='primary' component='span'>
-                                                    Upload custom dictionary
-                                                </Button>
-                                                <FormHelperText
-                                                    style={{ paddingLeft: theme.spacing(1), paddingRight: theme.spacing(1)}}
+                                                <Select
+                                                    value={gridWidth}
+                                                    onChange={e => {
+                                                        setBoardSize(e.target.value)
+                                                    }}
                                                 >
-                                                    {`Current dictionary: ${dictName}`}
-                                                </FormHelperText>
+                                                    <MenuItem value={2}>2</MenuItem>
+                                                    <MenuItem value={3}>3</MenuItem>
+                                                    <MenuItem value={4}>4</MenuItem>
+                                                    <MenuItem value={5}>5</MenuItem>
+                                                    <MenuItem value={6}>6</MenuItem>
+                                                </Select>
+                                                <FormHelperText>Grid size</FormHelperText>
                                             </FormControl>
-                                        </label>
-                                    </Paper>
+                                            <FormControl className={classes.control}>
+                                                <Select
+                                                    value={minWordLength}
+                                                    onChange={e => {
+                                                        setMinWordLength(e.target.value)
+                                                        clearResults()
+                                                    }}
+                                                >
+                                                    <MenuItem value={1}>1</MenuItem>
+                                                    <MenuItem value={2}>2</MenuItem>
+                                                    <MenuItem value={3}>3</MenuItem>
+                                                    <MenuItem value={4}>4</MenuItem>
+                                                    <MenuItem value={5}>5</MenuItem>
+                                                </Select>
+                                                <FormHelperText>Minimum word length</FormHelperText>
+                                            </FormControl>
+                                            <input
+                                                accept='text/*'
+                                                className={classes.input}
+                                                id='dictionary-upload'
+                                                multiple
+                                                type='file'
+                                                hidden
+                                                onChange={({ target }) => {
+                                                    const fr = new FileReader()
+                                                    fr.readAsText(target.files[0])
+                                                    fr.onload = (e) => {
+                                                        setDictionary(e.target.result.split('\n'))
+                                                        setDictName(target.files[0].name)
+                                                        clearResults()
+                                                    }
+                                                }}
+                                            />
+                                            <label htmlFor='dictionary-upload'>
+                                                <FormControl className={classes.control}>
+                                                    <Button color='primary' component='span'>
+                                                        Upload custom dictionary
+                                                </Button>
+                                                    <FormHelperText
+                                                        style={{ paddingLeft: theme.spacing(1), paddingRight: theme.spacing(1) }}
+                                                    >
+                                                        {`Current dictionary: ${dictName}`}
+                                                    </FormHelperText>
+                                                </FormControl>
+                                            </label>
+                                        </Paper>
+                                    )}
+                                </div>
                                 )}
-                            </div>
                         </div>
                     </Paper>
                 </Grid>

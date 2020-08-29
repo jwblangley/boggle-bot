@@ -44,6 +44,10 @@ const useStyles = makeStyles(theme => ({
     },
     control:{
         margin: theme.spacing(1)
+    },
+    actionButton: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1)
     }
 }))
 
