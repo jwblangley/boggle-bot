@@ -201,6 +201,9 @@ const Main = () => {
                                                         canHighlight={highlightWord === ''}
                                                         onHighlight={() => {
                                                             setHighlightWord(string)
+                                                            if (isPortraitDevice) {
+                                                                window.scrollTo(0, 0)
+                                                            }
                                                             runHighlightAnimation(path,
                                                                 () => setHighlightWord(''))
                                                         }}
