@@ -83,11 +83,6 @@ const Main = () => {
         setFoundWords(groupedResults)
     }
 
-    function deepCopy(data) {
-        let result = [...data]
-        return result.map(inner => [...inner])
-    }
-
     function checkValidInput(str) {
         return str.match(/^([A-Z]|QU)$/g)
     }
@@ -162,7 +157,7 @@ const Main = () => {
                             checkValidInput={checkValidInput}
                             highlights={highlightPath}
                             onChange={(i, j, newValue) => {
-                                let stateClone = deepCopy(inputs)
+                                let stateClone = _.cloneDeep(inputs)
                                 stateClone[i][j] = newValue.toUpperCase()
                                 setInputs(stateClone)
                                 clearResults()
