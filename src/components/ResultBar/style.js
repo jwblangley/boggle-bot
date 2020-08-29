@@ -2,7 +2,8 @@ import { makeStyles } from '@material-ui/core/index'
 
 const useStyles = makeStyles(theme => ({
     paper: {
-        padding: theme.spacing(1)
+        padding: theme.spacing(1),
+        margin: theme.spacing(0.5)
     },
     text: {
         display: 'inline-block',

@@ -41,7 +41,8 @@ const InputGrid = ({values, onChange, highlights, checkValidInput}) => {
                                         inputProps={{ style: {
                                             'width': `${45 / width}vmin`,
                                             'height': `${45 / width}vmin`,
-                                            'fontSize': '3em',
+                                            'padding': 0,
+                                            'fontSize': '5vmin',
                                             'textAlign': 'center',
                                             'boxSizing': 'border-box'
                                         }}}

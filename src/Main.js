@@ -123,7 +123,7 @@ const Main = () => {
         <div>
             <div className={classes.topBar}>
                 <Typography
-                    variant="h2"
+                    variant="h4"
                     className={classes.title}
                 >
                     Boggle-Bot
@@ -135,7 +135,7 @@ const Main = () => {
                 spacing={2}
             >
                 <Grid item xs={isPortraitDevice ? 12 : 8}>
-                    <Paper className={classes.gridPaper}>
+                    <Paper className={`${classes.paper} ${classes.inputGridPaper}`}>
                         <InputGrid
                             values={inputs}
                             checkValidInput={checkValidInput}
@@ -168,7 +168,7 @@ const Main = () => {
                     </Paper>
                 </Grid>
                 <Grid item xs={isPortraitDevice ? 12 : 4}>
-                    <Paper className={classes.gridPaper}>
+                    <Paper className={classes.paper}>
                         {
                             <Typography variant='h4'>
                                 {
@@ -201,6 +201,9 @@ const Main = () => {
                                                         canHighlight={highlightWord === ''}
                                                         onHighlight={() => {
                                                             setHighlightWord(string)
+                                                            if (isPortraitDevice) {
+                                                                window.scrollTo(0, 0)
+                                                            }
                                                             runHighlightAnimation(path,
                                                                 () => setHighlightWord(''))
                                                         }}
