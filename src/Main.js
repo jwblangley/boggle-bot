@@ -31,7 +31,7 @@ import useStyles from './style'
 import InputGrid from './components/InputGrid/InputGrid'
 import ResultBar from './components/ResultBar/ResultBar';
 
-const ALLOWED_CHARS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'QU', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+const ALLOWED_CHARS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'QU', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 const Main = () => {
 
