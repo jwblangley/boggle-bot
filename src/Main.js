@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
 
+import { useTheme } from "@material-ui/core/styles";
+
 import {
     Grid,
     Paper,
@@ -32,6 +34,7 @@ import ResultBar from './components/ResultBar/ResultBar';
 const Main = () => {
 
     const classes = useStyles()
+    const theme = useTheme()
     const isPortraitDevice = useMediaQuery('(max-aspect-ratio: 11/10)')
 
     // State
@@ -221,6 +224,26 @@ const Main = () => {
                                             </Select>
                                             <FormHelperText>Minimum word length</FormHelperText>
                                         </FormControl>
+                                        <input
+                                            accept='text/*'
+                                            className={classes.input}
+                                            id='dictionary-upload'
+                                            multiple
+                                            type='file'
+                                            hidden
+                                        />
+                                        <label htmlFor='dictionary-upload'>
+                                            <FormControl className={classes.control}>
+                                                <Button color='primary' component='span'>
+                                                    Upload custom dictionary
+                                                </Button>
+                                                <FormHelperText
+                                                    style={{ paddingLeft: theme.spacing(1), paddingRight: theme.spacing(1)}}
+                                                >
+                                                    Test
+                                                </FormHelperText>
+                                            </FormControl>
+                                        </label>
                                     </Paper>
                                 )}
                             </div>
