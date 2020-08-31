@@ -24,7 +24,10 @@ Custom dictionaries can be uploaded. To do this, they must follow a certain form
     * NB: for performance, it is still better to remove these
 * **No whitespace** (other than each `EOL` of course)
 
-
+## Screenshots
+![found words](screenshots/foundWords.png)
+![accordion](screenshots/accordion.gif)
+![show path](screenshots/showPath.gif)
 
 ---
 
