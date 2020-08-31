@@ -76,6 +76,10 @@ const Main = () => {
         clearResults()
     }
 
+    function countFoundWords(fw) {
+        return Object.entries(fw).reduce((acc, [wordLen, words]) => acc + words.length, 0)
+    }
+
     function handlePaths(paths) {
         const results = paths
             .map(path => ({
@@ -308,7 +312,7 @@ const Main = () => {
                                     processing ? 'Finding words...'
                                         : _.isEmpty(foundWords)
                                             ? 'Fill in grid to begin'
-                                            : `${Object.entries(foundWords).reduce((acc, [wordLen, words]) => acc + words.length, 0)} Words Found`
+                                            : `${countFoundWords(foundWords)} Word${countFoundWords(foundWords) > 1 ? 's' : ''} Found`
                                 }
                             </Typography>
                         }
