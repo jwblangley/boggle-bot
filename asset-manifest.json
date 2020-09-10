@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/boggle-bot/static/css/main.27f58697.chunk.css",
-    "main.js": "/boggle-bot/static/js/main.ec1a0eee.chunk.js",
-    "main.js.map": "/boggle-bot/static/js/main.ec1a0eee.chunk.js.map",
+    "main.js": "/boggle-bot/static/js/main.d6f9602d.chunk.js",
+    "main.js.map": "/boggle-bot/static/js/main.d6f9602d.chunk.js.map",
     "runtime-main.js": "/boggle-bot/static/js/runtime-main.5e8f4784.js",
     "runtime-main.js.map": "/boggle-bot/static/js/runtime-main.5e8f4784.js.map",
     "static/js/2.d3e465b7.chunk.js": "/boggle-bot/static/js/2.d3e465b7.chunk.js",
@@ -10,7 +10,7 @@
     "778bc659fa9357d32747.worker.js": "/boggle-bot/778bc659fa9357d32747.worker.js",
     "778bc659fa9357d32747.worker.js.map": "/boggle-bot/778bc659fa9357d32747.worker.js.map",
     "index.html": "/boggle-bot/index.html",
-    "precache-manifest.670e24b604c6024aa85eda5c2b505e8e.js": "/boggle-bot/precache-manifest.670e24b604c6024aa85eda5c2b505e8e.js",
+    "precache-manifest.775088970636d67c3b8ffc25372ab698.js": "/boggle-bot/precache-manifest.775088970636d67c3b8ffc25372ab698.js",
     "service-worker.js": "/boggle-bot/service-worker.js",
     "static/css/main.27f58697.chunk.css.map": "/boggle-bot/static/css/main.27f58697.chunk.css.map",
     "static/js/2.d3e465b7.chunk.js.LICENSE.txt": "/boggle-bot/static/js/2.d3e465b7.chunk.js.LICENSE.txt"
@@ -19,6 +19,6 @@
     "static/js/runtime-main.5e8f4784.js",
     "static/js/2.d3e465b7.chunk.js",
     "static/css/main.27f58697.chunk.css",
-    "static/js/main.ec1a0eee.chunk.js"
+    "static/js/main.d6f9602d.chunk.js"
   ]
 }
